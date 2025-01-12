@@ -120,6 +120,24 @@
             font-size: 1.1rem;
         }
 
+        /* Add this CSS for fullscreen container */
+        .fullscreen-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1000;
+        }
+
+        .fullscreen-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }        
+
         /* Footer Section */
         footer {
             background: linear-gradient(135deg, #5865f2, #23272a);
@@ -202,10 +220,8 @@
                 document.querySelector('.video-player').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                // Request fullscreen mode for the iframe
-                player.requestFullscreen().catch((error) => {
-                    console.error('Error attempting to enable fullscreen:', error);
-                });
+                // Open video in fullscreen mode
+                openFullscreen(player);
             }
         }
 
@@ -223,6 +239,39 @@
 
             document.querySelector('.video-player').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Open video in fullscreen mode
+            openFullscreen(player);
+        }
+
+        // Function to open iframe in fullscreen mode
+        function openFullscreen(element) {
+            const fullscreenContainer = document.createElement('div');
+            fullscreenContainer.className = 'fullscreen-container';
+            document.body.appendChild(fullscreenContainer);
+
+            const iframeClone = element.cloneNode(true);
+            fullscreenContainer.appendChild(iframeClone);
+
+            fullscreenContainer.style.display = 'block';
+
+            // Request fullscreen mode for the container
+            if (fullscreenContainer.requestFullscreen) {
+                fullscreenContainer.requestFullscreen();
+            } else if (fullscreenContainer.mozRequestFullScreen) { // Firefox
+                fullscreenContainer.mozRequestFullScreen();
+            } else if (fullscreenContainer.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+                fullscreenContainer.webkitRequestFullscreen();
+            } else if (fullscreenContainer.msRequestFullscreen) { // IE/Edge
+                fullscreenContainer.msRequestFullscreen();
+            }
+
+            // Exit fullscreen when user presses ESC
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement) {
+                    fullscreenContainer.remove();
+                }
+            });
         }
 
         // Call autoPlayVideo function when the page loads
