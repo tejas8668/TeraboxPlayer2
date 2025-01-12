@@ -207,6 +207,13 @@
         }
     </script>
     <script>
+        // Initialize Telegram Web App
+        function initializeTelegramWebApp() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                Telegram.WebApp.ready(); // Notify Telegram that the app is ready
+                Telegram.WebApp.expand(); // Expand the Mini App to full screen
+            }
+        }
         // Function to play video automatically if a parameter is passed
         function autoPlayVideo() {
             const urlParams = new URLSearchParams(window.location.search);
