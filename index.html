@@ -188,41 +188,46 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
-        <script>
-            // Function to play video automatically if a parameter is passed
-            function autoPlayVideo() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const teraboxLink = urlParams.get('url');
-    
-                if (teraboxLink) {
-                    const iframeUrl = `https://www.terabox.tech/play.html?url=${encodeURIComponent(teraboxLink)}`;
-                    const player = document.getElementById('videoPlayer');
-                    player.src = iframeUrl;
-    
-                    document.querySelector('.video-player').style.display = 'block';
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            }
-    
-            // Function to play video manually
-            function playVideo() {
-                const input = document.getElementById('videoLink').value;
-                if (!input.trim()) {
-                    alert('Please enter a valid link.');
-                    return;
-                }
-    
-                const iframeUrl = `https://www.terabox.tech/play.html?url=${encodeURIComponent(input)}`;
+    <script>
+        // Function to play video automatically if a parameter is passed
+        function autoPlayVideo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const teraboxLink = urlParams.get('url');
+
+            if (teraboxLink) {
+                const iframeUrl = `https://www.terabox.tech/play.html?url=${encodeURIComponent(teraboxLink)}`;
                 const player = document.getElementById('videoPlayer');
                 player.src = iframeUrl;
-    
+
                 document.querySelector('.video-player').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // Request fullscreen mode for the iframe
+                player.requestFullscreen().catch((error) => {
+                    console.error('Error attempting to enable fullscreen:', error);
+                });
             }
-    
-            // Call autoPlayVideo function when the page loads
-            window.onload = autoPlayVideo;
-        </script>
+        }
+
+        // Function to play video manually
+        function playVideo() {
+            const input = document.getElementById('videoLink').value;
+            if (!input.trim()) {
+                alert('Please enter a valid link.');
+                return;
+            }
+
+            const iframeUrl = `https://www.terabox.tech/play.html?url=${encodeURIComponent(input)}`;
+            const player = document.getElementById('videoPlayer');
+            player.src = iframeUrl;
+
+            document.querySelector('.video-player').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Call autoPlayVideo function when the page loads
+        window.onload = autoPlayVideo;
+    </script>
 </head>
 <body>
     <header>
