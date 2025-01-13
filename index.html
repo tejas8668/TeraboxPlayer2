@@ -157,6 +157,13 @@
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
         }
 
         .spinner-border {
@@ -243,13 +250,6 @@
             const player = document.getElementById('videoPlayer');
             player.src = iframeUrl;
 
-            const loadingIndicator = document.querySelector('.loading-indicator');
-            loadingIndicator.style.display = 'block';
-
-            player.onload = function () {
-                loadingIndicator.style.display = 'none';
-            };
-
             document.querySelector('.video-player').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -284,13 +284,6 @@
                 const player = document.getElementById('videoPlayer');
                 player.src = iframeUrl;
 
-                const loadingIndicator = document.querySelector('.loading-indicator');
-                loadingIndicator.style.display = 'block';
-
-                player.onload = function () {
-                    loadingIndicator.style.display = 'none';
-                };
-
                 document.querySelector('.video-player').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -298,6 +291,11 @@
                 openFullscreen(player);
             }
         }
+
+        // Hide loading indicator when iframe is loaded
+        document.getElementById('videoPlayer').onload = function () {
+            document.querySelector('.loading-indicator').style.display = 'none';
+        };
 
         // Function to play video manually
         function playVideo() {
