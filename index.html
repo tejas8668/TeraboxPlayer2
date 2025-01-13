@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Terabox Video Player and Downloader - Watch and Download videos without needing the Terabox App or Premium.">
+    <meta name="description"
+        content="Terabox Video Player and Downloader - Watch and Download videos without needing the Terabox App or Premium.">
     <title>Terabox Video Player</title>
     <link rel="icon" type="image/png" href="https://s2.teraboxcdn.com/common-static/favicon.ico">
+    <div class="video-player">
+        <div class="loading-indicator" style="display: none;">
+            <div class="spinner-border text-light" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <p>Loading...</p>
+        </div>
+        <iframe id="videoPlayer" allowfullscreen scrolling="no"></iframe>
+    </div>
     <style>
         /* Base Styles */
         body {
@@ -25,11 +36,13 @@
             position: relative;
             z-index: 10;
         }
+
         header h1 {
             font-size: 2.8rem;
             margin: 0;
             font-weight: bold;
         }
+
         header p {
             font-size: 1.2rem;
             margin-top: 10px;
@@ -136,7 +149,24 @@
             width: 100%;
             height: 100%;
             border: none;
-        }        
+        }
+
+        .loading-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .spinner-border {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
 
         /* Footer Section */
         footer {
@@ -171,6 +201,17 @@
             z-index: -1;
         }
 
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+
         /* Responsive Design */
         @media (max-width: 768px) {
             header h1 {
@@ -202,8 +243,18 @@
             const player = document.getElementById('videoPlayer');
             player.src = iframeUrl;
 
+            const loadingIndicator = document.querySelector('.loading-indicator');
+            loadingIndicator.style.display = 'block';
+
+            player.onload = function () {
+                loadingIndicator.style.display = 'none';
+            };
+
             document.querySelector('.video-player').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Open video in fullscreen mode
+            openFullscreen(player);
         }
     </script>
     <script>
@@ -218,8 +269,8 @@
                 const teraboxLink = urlParams.get('url');
 
                 if (teraboxLink) {
-                   // Open the video in the Mini App
-                   window.Telegram.WebApp.openLink(teraboxLink);
+                    // Open the video in the Mini App
+                    window.Telegram.WebApp.openLink(teraboxLink);
                 }
             }
         }
@@ -229,15 +280,22 @@
             const teraboxLink = urlParams.get('url');
 
             if (teraboxLink) {
-               const iframeUrl = teraboxLink; // Use the provided URL directly
-               const player = document.getElementById('videoPlayer');
-               player.src = iframeUrl;
+                const iframeUrl = teraboxLink; // Use the provided URL directly
+                const player = document.getElementById('videoPlayer');
+                player.src = iframeUrl;
 
-               document.querySelector('.video-player').style.display = 'block';
-               window.scrollTo({ top: 0, behavior: 'smooth' });
+                const loadingIndicator = document.querySelector('.loading-indicator');
+                loadingIndicator.style.display = 'block';
 
-               // Open video in fullscreen mode
-               openFullscreen(player);
+                player.onload = function () {
+                    loadingIndicator.style.display = 'none';
+                };
+
+                document.querySelector('.video-player').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // Open video in fullscreen mode
+                openFullscreen(player);
             }
         }
 
@@ -291,15 +349,17 @@
         }
 
         // Call autoPlayVideo function when the page loads
-        window.onload = function() {
+        window.onload = function () {
             initializeTelegramWebApp();
             autoPlayVideo();
         }
     </script>
 </head>
+
 <body>
     <header>
-        <img src="https://vectorseek.com/wp-content/uploads/2023/11/TeraBox-Logo-Vector.svg-.png" alt="Terabox Logo" style="width: 100px; margin-bottom: 20px;">
+        <img src="https://vectorseek.com/wp-content/uploads/2023/11/TeraBox-Logo-Vector.svg-.png" alt="Terabox Logo"
+            style="width: 100px; margin-bottom: 20px;">
         <h1>Terabox Video Player</h1>
         <p>Play videos seamlessly. No App or Premium required.</p>
     </header>
@@ -324,7 +384,9 @@
         </div>
     </main>
     <footer>
-        <p>&copy; 2024 Terabox Video Player. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="https://github.com/cu-sanjay">GitHub</a></p>
+        <p>&copy; 2024 Terabox Video Player. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a
+                href="https://github.com/cu-sanjay">GitHub</a></p>
     </footer>
 </body>
+
 </html>
