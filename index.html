@@ -212,6 +212,15 @@
             if (window.Telegram && window.Telegram.WebApp) {
                 Telegram.WebApp.ready(); // Notify Telegram that the app is ready
                 Telegram.WebApp.expand(); // Expand the Mini App to full screen
+
+                // Get the URL parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                const teraboxLink = urlParams.get('url');
+
+                if (teraboxLink) {
+                   // Open the video in the Mini App
+                   window.Telegram.WebApp.openLink(teraboxLink);
+                }
             }
         }
         // Function to play video automatically if a parameter is passed
@@ -220,15 +229,15 @@
             const teraboxLink = urlParams.get('url');
 
             if (teraboxLink) {
-                const iframeUrl = `https://www.terabox.tech/play.html?url=${encodeURIComponent(teraboxLink)}`;
-                const player = document.getElementById('videoPlayer');
-                player.src = iframeUrl;
+               const iframeUrl = teraboxLink; // Use the provided URL directly
+               const player = document.getElementById('videoPlayer');
+               player.src = iframeUrl;
 
-                document.querySelector('.video-player').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+               document.querySelector('.video-player').style.display = 'block';
+               window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                // Open video in fullscreen mode
-                openFullscreen(player);
+               // Open video in fullscreen mode
+               openFullscreen(player);
             }
         }
 
@@ -282,7 +291,10 @@
         }
 
         // Call autoPlayVideo function when the page loads
-        window.onload = autoPlayVideo;
+        window.onload = function() {
+            initializeTelegramWebApp();
+            autoPlayVideo();
+        }
     </script>
 </head>
 <body>
